@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@import "primereact/resources/primereact.min.css";
+@import "./assets/themes/themes.css";
+@import "primeflex/primeflex.css";
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.bg-blue-grad {
+  background: transparent linear-gradient(264deg, #ffffff 0%, #159cce 0%, #0e39ad 100%) 0% 0% no-repeat padding-box;
+}
+
+.p-toast {
+  z-index: 10000;
+}
+
+@media only screen and (max-width: 520px) {
+  .p-toast {
+    width: 80%;
+    max-width: 80%;
+  }
+}

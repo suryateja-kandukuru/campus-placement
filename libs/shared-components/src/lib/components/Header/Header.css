@@ -1,0 +1,93 @@
+@import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0);
+:root {
+  --font-xxl: 24px;
+  --font-xl: 20px;
+  --font-lg: 18px;
+  --font-md: 16px;
+  --font-sm: 14px;
+  --font-sx: 12px;
+  --line-height-loose: 1.75;
+  --line-height-normal: 1.5;
+  --line-height-dense: 1.1;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  height: 64px;
+  position: sticky;
+  color: blue;
+  background-color: white;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  font-size: var(--font-lg);
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.logoContainer img {
+  width: 40px;
+  margin: auto 10px auto auto;
+}
+.logoContainer p {
+  font-size: 20px;
+  margin: auto;
+  font-weight: 400;
+}
+
+.sideMenu {
+  height: var(--space-3);
+  position: relative;
+  margin: 0px 0px 10px 0px;
+}
+@media (hover: hover) {
+  .logout:hover {
+    color: #757575;
+  }
+  .sideMenu span:hover {
+    color: #757575;
+    cursor: pointer;
+  }
+}
+
+/* responsive styles (Navigation Bar) */
+@media screen and (max-width: 1200px) {
+  .profile-container {
+    display: none;
+  }
+  .searchContainer {
+    margin-right: var(--space-5);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .searchContainer {
+    display: none;
+  }
+  .searchContainerResponsive {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .logoContainer p {
+    display: none;
+  }
+}

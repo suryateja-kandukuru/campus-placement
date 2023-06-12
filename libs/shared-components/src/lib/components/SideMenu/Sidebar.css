@@ -1,0 +1,110 @@
+.p-sidebar {
+  min-width: 500px;
+}
+.nav_container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: var(--space-5);
+}
+.nav-sep {
+  font-size: 24px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+}
+.menu-item {
+  width: -moz-fit-content;
+  width: fit-content;
+  text-decoration: none;
+  font-size: 22px;
+  border-bottom: 3px solid transparent;
+  transition: border 0.5s;
+}
+.menu-item-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 60px;
+}
+.profile-container2 {
+  display: none !important;
+}
+
+.social-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px !important;
+}
+@media (hover: hover) {
+  .menu-item:hover {
+    border-bottom: 3px solid black;
+    cursor: pointer;
+  }
+}
+
+/* responsive styles (side menu) */
+.nav_container {
+  margin-top: var(--space-6);
+}
+.profile-container {
+  display: none;
+}
+.profile-container2 {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  display: flex !important;
+  flex-direction: row-reverse;
+}
+.profile-container2 .profile-details {
+  border: none;
+  border-left: 1.2px solid #1c1b1a;
+  padding-left: var(--space-3);
+  padding-right: 0px;
+  flex-direction: row-reverse;
+}
+.profile-container2 .profile-info {
+  padding: 0px 0px 0px var(--space-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.menu-item-container {
+  height: 70vh;
+}
+
+@media screen and (max-width: 550px) {
+  .p-sidebar {
+    min-width: 100vw;
+    max-width: 100vw;
+  }
+  .profile-container2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .profile-container2 .profile-details,
+  .profile-container2 .logout {
+    border: none;
+    padding-left: 0px;
+  }
+  .profile-container2 .logout {
+    font-size: var(--font-md);
+    margin-left: 65px;
+  }
+  .social-container {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
