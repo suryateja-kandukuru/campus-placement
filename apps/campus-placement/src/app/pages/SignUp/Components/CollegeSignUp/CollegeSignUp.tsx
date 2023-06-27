@@ -39,6 +39,7 @@ const CollegeSignUp = () => {
         detail: "Singup Successfull.",
         life: 3000,
       });
+      navigate("/login");
     } catch (e: any) {
       context?.state.toast.show({
         severity: "error",

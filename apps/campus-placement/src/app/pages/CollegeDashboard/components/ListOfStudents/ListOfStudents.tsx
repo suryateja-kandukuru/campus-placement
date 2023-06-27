@@ -22,7 +22,6 @@ export function ListOfStudents(props: ListOfStudentsProps) {
 
   const base = URL + "/student/studentsData?collegeId=";
   const deleteURL = URL + "/student/deleteStudent?id=";
-  const matchedUrl = URL + "/job/matchedJobs";
   const [list, setList] = useState({});
 
   useEffect(() => {
@@ -31,10 +30,20 @@ export function ListOfStudents(props: ListOfStudentsProps) {
 
   // wrtie a function to fetch data from backend
   const getCollege = async () => {
-    const token = localStorage.getItem("token");
-    const decoded = jwtDecode(token || "");
-    const response = await axios.get(base + "coll_01" || decoded?.id);
-    setList(response.data);
+    try {
+      const token = localStorage.getItem("token");
+      const decoded = jwtDecode(token || "");
+      const response = await axios.get(base + decoded?.id);
+      setList(response.data);
+    } catch (e) {
+      console.error(e);
+      context?.state.toast.show({
+        severity: "error",
+        summary: "Error",
+        detail: e.message,
+        life: 3000,
+      });
+    }
   };
 
   const handleMatchedJobs = async (rowData) => {
@@ -42,18 +51,19 @@ export function ListOfStudents(props: ListOfStudentsProps) {
       type: "SetStudentDetails",
       payload: rowData,
     });
-    const result = await axios.post(matchedUrl, rowData);
-    context?.dispatch?.({
-      type: "SetMatchedJobs",
-      payload: result.data || [],
-    });
-    navigate("/college/matched-jobs");
+
+    navigate("/college/matched-jobs?id=" + rowData.id);
+  };
+
+  const handleAppliedJob = async (rowData) => {
+    navigate("/college/applied-jobs?id=" + rowData.id);
   };
   const actionBodyTemplate = (rowData) => {
     return (
       <>
         <Button
           icon="pi pi-info"
+          title="Matched Jobs"
           rounded
           outlined
           className="m-2"
@@ -63,7 +73,19 @@ export function ListOfStudents(props: ListOfStudentsProps) {
           }}
         />
         <Button
+          icon="pi pi-check"
+          title="Applied Jobs"
+          rounded
+          outlined
+          className="m-2"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAppliedJob(rowData);
+          }}
+        />
+        <Button
           icon="pi pi-trash"
+          title="Delete Student"
           rounded
           outlined
           severity="danger"

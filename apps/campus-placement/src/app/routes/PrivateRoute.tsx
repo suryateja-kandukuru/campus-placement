@@ -9,7 +9,7 @@ type props = {
   allowedRoles: string[];
 };
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ allowedRoles }) => {
   const location = useLocation();
 
   const token = localStorage.getItem("token");
@@ -18,6 +18,12 @@ const PrivateRoute = () => {
   }
   const decoded = jwtDecode(token || "");
   const isAllowed = !!token;
+
+  const isAccessiblie = allowedRoles.includes(decoded?.role);
+
+  if (!isAccessiblie) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
   return isAllowed ? (
     <>

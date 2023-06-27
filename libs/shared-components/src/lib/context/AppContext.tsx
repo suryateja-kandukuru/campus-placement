@@ -22,7 +22,6 @@ const initialState: any = {
   role: "",
   id: "",
   studentDetails: {},
-  matchedJobs: [],
 };
 
 const reducer = (state: State, action: Action): any => {
@@ -41,8 +40,7 @@ const reducer = (state: State, action: Action): any => {
     }
     case "SetStudentDetails":
       return { ...state, studentDetails: action.payload };
-    case "SetMatchedJobs":
-      return { ...state, matchedJobs: action.payload };
+
     default:
       return state;
   }

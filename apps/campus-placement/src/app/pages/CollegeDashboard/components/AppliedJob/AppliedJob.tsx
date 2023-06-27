@@ -15,67 +15,27 @@ import { useLocation } from "react-router-dom";
 /* eslint-disable-next-line */
 export interface ListOfStudentsProps {}
 
-export function MatchedJobs() {
+export function AppliedJob() {
   const location = useLocation();
   const context = useContext(AppContext);
-  const matchedUrl = URL + "/job/matchedJobs";
 
-  const base = URL + "/job/updateJob";
+  const [jobs, setJobs] = useState(null);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
-  const [loader, setLoader] = useState(false);
-  const [btnLoader, setBtnLoader] = useState(false);
+  const base = URL + "/job/appliedJobs?studentId=";
+  const [list, setList] = useState([]);
 
-  const [jobId, setJobId] = useState(null);
-  const { studentDetails } = context?.state;
-  const [matchedJobs, setMatchedJobs] = useState([]);
   useEffect(() => {
-    fetchMatchedJobs();
+    getJobs();
   }, []);
 
-  const fetchMatchedJobs = async () => {
+  // wrtie a function to fetch data from backend
+  const getJobs = async () => {
     try {
-      setLoader(true);
-      const result = await axios.get(
-        matchedUrl + "?studentId=" + location?.search?.split("?id=")[1]
-      );
-      setLoader(false);
-      setMatchedJobs(result.data);
-    } catch (e) {
-      setLoader(false);
-      context?.state.toast.show({
-        severity: "error",
-        summary: "Error",
-        detail: e.message,
-        life: 3000,
-      });
-      console.error(e);
-    }
-  };
-
-  const handleApply = async (rowData) => {
-    try {
-      setJobId(rowData?.id);
-      setBtnLoader(true);
       const id = location?.search?.split("?id=")[1];
-      const filtered =
-        matchedJobs.filter((job) => job.id === rowData.id)[0] || [];
-      console.log("filtered", filtered);
-      if (filtered?.applications?.length) {
-        filtered.applications = [...filtered.applications, id];
-      } else {
-        filtered.applications = [id];
-      }
-      const response = await axios.post(base, filtered);
-      setBtnLoader(false);
-      context?.state.toast.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Applied Successfully",
-        life: 3000,
-      });
-      fetchMatchedJobs();
+      const response = await axios.get(base + id);
+      setList(response.data);
     } catch (e) {
-      setBtnLoader(false);
       context?.state.toast.show({
         severity: "error",
         summary: "Error",
@@ -99,7 +59,7 @@ export function MatchedJobs() {
         <div className="px-6 pb-2">
           <h4 className="text-lg font-semibold">Skills:</h4>
           <div className="flex flex-wrap">
-            {job?.skills.map((skill, index) => (
+            {job?.skills?.map((skill, index) => (
               <Chip key={index} label={skill} className="mr-2 mb-2" />
             ))}
           </div>
@@ -107,7 +67,7 @@ export function MatchedJobs() {
         <div className="px-6 pb-2">
           <h4 className="text-lg font-semibold">Certifications:</h4>
           <ul className="list-disc ml-6">
-            {job.certifications.map((certification, index) => (
+            {job?.certifications?.map((certification, index) => (
               <li key={index}>{certification}</li>
             ))}
           </ul>
@@ -115,22 +75,10 @@ export function MatchedJobs() {
         <div className="px-6 pb-2">
           <h4 className="text-lg font-semibold">Education:</h4>
           <ul className="list-disc ml-6">
-            {job.education.map((education, index) => (
+            {job?.education?.map((education, index) => (
               <li key={index}>{education}</li>
             ))}
           </ul>
-        </div>
-        <div className="flex items-center justify-between px-4 py-2">
-          <Button
-            type="button"
-            label="Apply"
-            loading={btnLoader && jobId === job.id}
-            className="w-full  primary bg-[#6366F1]"
-            onClick={(e) => {
-              e.preventDefault();
-              handleApply(job);
-            }}
-          />
         </div>
       </Card>
     </div>
@@ -138,22 +86,20 @@ export function MatchedJobs() {
 
   return (
     <div>
-      <p className="text-3xl text-purple-500 m-4 ml-0">List of Jobs:</p>
+      <p className="text-3xl text-purple-500 m-4 ml-0">List of Applied Jobs:</p>
 
-      {loader ? (
-        "Loading..."
-      ) : matchedJobs?.length ? (
+      {list?.length ? (
         <Carousel
-          value={matchedJobs}
+          value={list}
           numVisible={3}
           numScroll={3}
           itemTemplate={productTemplate}
         />
       ) : (
-        <Card>No Jobs Found</Card>
+        <Card>No Applied Jobs Found</Card>
       )}
     </div>
   );
 }
 
-export default MatchedJobs;
+export default AppliedJob;

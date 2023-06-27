@@ -11,11 +11,13 @@ import { AppContext } from "@shared-components";
 import { Card } from "primereact/card";
 import { Chip } from "primereact/chip";
 import { Carousel } from "primereact/carousel";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable-next-line */
 export interface ListOfStudentsProps {}
 
 export function CompanyList() {
+  const navigate = useNavigate();
   const context = useContext(AppContext);
 
   const [jobs, setJobs] = useState(null);
@@ -31,42 +33,29 @@ export function CompanyList() {
 
   // wrtie a function to fetch data from backend
   const getJobs = async () => {
-    const token = localStorage.getItem("token");
-    const decoded = jwtDecode(token || "");
-    const response = await axios.get(base + decoded?.id);
-    console.log(response.data);
-    setList(response.data);
+    try {
+      const token = localStorage.getItem("token");
+      const decoded = jwtDecode(token || "");
+      const response = await axios.get(base + decoded?.id);
+      console.log(response.data);
+      setList(response.data);
+    } catch (e) {
+      context?.state.toast.show({
+        severity: "error",
+        summary: "Error",
+        detail: e.message,
+        life: 3000,
+      });
+      console.error(e);
+    }
   };
 
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <>
-        <Button
-          icon="pi pi-info"
-          rounded
-          outlined
-          className="m-2"
-          onClick={() => handleDeleteDialog(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          className="m-2"
-          onClick={() => handleDetails(rowData)}
-        />
-      </>
-    );
+  const handleAppliedStudents = (row) => {
+    navigate("/company/view-application?id=" + row.id);
   };
 
   const hideDeleteDialog = () => {
     setDeleteDialog(false);
-  };
-
-  const handleDetails = (rowData) => {
-    setJobs(rowData);
-    setDeleteDialog(true);
   };
 
   const handleDeleteDialog = (rowData) => {
@@ -148,10 +137,16 @@ export function CompanyList() {
           </ul>
         </div>
         <div className="flex items-center justify-between px-4 py-2">
-          <Button
+          {/* <Button
             type="button"
             icon="pi pi-pencil"
             className="p-button-rounded p-button-secondary"
+          /> */}
+          <Button
+            type="button"
+            icon="pi pi-info"
+            className="p-button-rounded p-button-success"
+            onClick={() => handleAppliedStudents(job)}
           />
           <Button
             type="button"

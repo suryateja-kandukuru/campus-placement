@@ -54,7 +54,7 @@ const Login = () => {
     } catch (e: any) {
       console.log(e);
       setLoader(false);
-      context?.state.toast.show({
+      context?.state?.toast?.show({
         severity: "error",
         summary: "Error Message",
         detail: e.message,
