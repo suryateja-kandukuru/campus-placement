@@ -13,6 +13,7 @@ import PrivateRoute from "./PrivateRoute";
 import CompanyDashboard from "../pages/CompanyDashboard/CompanyDashboard";
 import CompanyProfile from "../pages/CompanyDashboard/components/Profile/CompanyProfile";
 import CompanyList from "../pages/CompanyDashboard/components/ListOfCompanies/CompanyList";
+import CreateJob from "../pages/CompanyDashboard/components/CreateJob/CreateJob";
 
 const Router = () => {
   return (
@@ -32,8 +33,7 @@ const Router = () => {
           <Route path="company" element={<CompanyDashboard />}>
             <Route path="" element={<Navigate to={"list"} replace={true} />} />
             <Route path="list" element={<CompanyList />} />
-            <Route path="profile" element={<CompanyProfile />} />
-            <Route path="upload" element={<FileUpload />} />
+            <Route path="create" element={<CreateJob />} />
             <Route path="update-profile" element={<UpdateProfile />} />
           </Route>
         </Route>

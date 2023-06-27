@@ -22,7 +22,7 @@ export function CompanyList() {
   const [deleteDialog, setDeleteDialog] = useState(false);
 
   const base = URL + "/job/jobsData?orgId=";
-  const deleteURL = URL + "/student/deleteStudent?id=";
+  const deleteURL = URL + "/job/deleteJob";
   const [list, setList] = useState([]);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export function CompanyList() {
     hideDeleteDialog();
 
     try {
-      await axios.post(deleteURL + jobs?.id);
+      await axios.delete(deleteURL + "?jobId=" + jobs?.id);
       context?.state.toast.show({
         severity: "success",
         summary: "Success",
@@ -168,12 +168,16 @@ export function CompanyList() {
     <div>
       <p className="text-3xl text-purple-500 m-4 ml-0">List of Jobs:</p>
 
-      <Carousel
-        value={list}
-        numVisible={3}
-        numScroll={3}
-        itemTemplate={productTemplate}
-      />
+      {list?.length ? (
+        <Carousel
+          value={list}
+          numVisible={3}
+          numScroll={3}
+          itemTemplate={productTemplate}
+        />
+      ) : (
+        <Card>No Jobs Found</Card>
+      )}
 
       <Dialog
         visible={deleteDialog}

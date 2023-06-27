@@ -40,7 +40,7 @@ const Login = () => {
         emailId: data.email,
         password: data.password,
       });
-      setLoader(true);
+      setLoader(false);
       const decoded = jwt_decode(result?.data);
 
       localStorage.setItem("token", result?.data);
