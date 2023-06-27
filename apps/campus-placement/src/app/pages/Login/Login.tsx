@@ -1,104 +1,120 @@
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { Password } from "primereact/password";
 import { classNames } from "primereact/utils";
+import { AppContext } from "@shared-components";
+import axios from "axios";
+import URL from "../../constants/constants";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import "./Login.scss";
-
+import Gradute from "../../../assets/images/graduate.jpg";
 const Login = () => {
-  const [formData, setFormData] = useState({});
-  const defaultValues = {
-    email: "",
-    password: "",
-  };
-
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
+  const context = useContext(AppContext);
   const {
-    control,
-    formState: { errors },
     handleSubmit,
-    reset,
-  } = useForm({ defaultValues });
+    register,
+    formState: { errors },
+  } = useForm();
 
-  const onSubmit = (data: any) => {
-    setFormData(data);
+  const onSubmit = async (data: any) => {
+    try {
+      localStorage.clear();
+      setLoader(true);
+      // const jsonResult = await fetch(URL + "/user/login", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     emailId: data.email,
+      //     password: data.password,
+      //   }),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "ngrok-skip-browser-warning": true,
+      //   },
+      // });
+      // const result = await jsonResult.json();
+      const result = await axios.post(URL + "/user/login", {
+        emailId: data.email,
+        password: data.password,
+      });
+      setLoader(true);
+      const decoded = jwt_decode(result?.data);
 
-    reset();
-  };
-
-  const getFormErrorMessage = (name: any) => {
-    return (
-      errors[name] && <small className="p-error">{errors[name].message}</small>
-    );
+      localStorage.setItem("token", result?.data);
+      if (decoded.role === "college") {
+        navigate(`/college`, { replace: true });
+      } else if (decoded.role === "company") {
+        navigate("/company", { replace: true });
+      } else {
+        navigate("/login");
+      }
+    } catch (e: any) {
+      console.log(e);
+      setLoader(false);
+      context?.state.toast.show({
+        severity: "error",
+        summary: "Error Message",
+        detail: e.message,
+        life: 3000,
+      });
+    }
   };
 
   return (
-    <div className="login form-demo h-full flex justify-center items-center">
-      <div className="flex justify-content-center">
-        <div className="card">
-          <h5 className="text-center">Login to Campus Placement</h5>
-          <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-            <div className="field">
-              <span className="p-float-label p-input-icon-right">
-                <i className="pi pi-envelope" />
-                <Controller
-                  name="email"
-                  control={control}
-                  rules={{
-                    required: "Email is required.",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: "Invalid email address. E.g. example@email.com",
-                    },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <InputText
-                      id={field.name}
-                      {...field}
-                      className={classNames({
-                        "p-invalid": fieldState.invalid,
-                      })}
-                    />
-                  )}
-                />
-                <label
-                  htmlFor="email"
-                  className={classNames({ "p-error": !!errors.email })}
-                >
-                  Email*
-                </label>
-              </span>
-              {getFormErrorMessage("email")}
-            </div>
-            <div className="field">
-              <span className="p-float-label">
-                <Controller
-                  name="password"
-                  control={control}
-                  rules={{ required: "Password is required." }}
-                  render={({ field, fieldState }) => (
-                    <Password
-                      appendTo={"self"}
-                      id={field.name}
-                      className={classNames({
-                        "p-invalid": fieldState.invalid,
-                      })}
-                    />
-                  )}
-                />
-                <label
-                  htmlFor="password"
-                  className={classNames({ "p-error": errors.password })}
-                >
-                  Password*
-                </label>
-              </span>
-              {getFormErrorMessage("password")}
-            </div>
-
-            <Button type="submit" label="Submit" className="mt-2 text-black" />
-          </form>
-        </div>
+    <div className="login-container flex justify-center items-center h-screen">
+      <div className="w-96 form-container max-w-md p-6  rounded shadow">
+        <h2 className="text-center text-2xl font-semibold mb-4">Login</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="email">
+              Email
+            </label>
+            <InputText
+              id="email"
+              type="text"
+              className={classNames("w-full", {
+                "p-invalid": errors.email,
+              })}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+            {errors.email && (
+              <div className="text-red-500">{errors.email.message}</div>
+            )}
+          </div>
+          <div>
+            <label className="block mb-1 font-medium" htmlFor="password">
+              Password
+            </label>
+            <InputText
+              id="password"
+              type="password"
+              className={classNames("w-full", {
+                "p-invalid": errors.password,
+              })}
+              {...register("password", {
+                required: "Password is required",
+              })}
+            />
+            {errors.password && (
+              <div className="text-red-500">{errors.password.message}</div>
+            )}
+          </div>
+          <Button
+            type="submit"
+            label="Login"
+            loading={loader}
+            className="w-full  primary bg-[#6366F1]"
+          />
+        </form>
       </div>
     </div>
   );

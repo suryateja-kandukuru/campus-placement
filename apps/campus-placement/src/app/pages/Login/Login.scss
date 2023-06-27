@@ -1,26 +1,12 @@
-.form-demo .card {
-  min-width: 450px;
-}
-.form-demo .card form {
-  margin-top: 2rem;
-}
-.form-demo .card .field {
-  margin-bottom: 1.5rem;
+.login-container {
+  background: url("../../../../src/assets/images/graduate.jpg") no-repeat center center;
 }
 
-.login {
-  .p-password-panel {
-    display: none !important;
-  }
-}
-@media screen and (max-width: 960px) {
-  .form-demo .card {
-    width: 80%;
-  }
-}
-@media screen and (max-width: 640px) {
-  .form-demo .card {
-    width: 100%;
-    min-width: 0;
-  }
+.form-container {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(3.5px);
+  -webkit-backdrop-filter: blur(3.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }

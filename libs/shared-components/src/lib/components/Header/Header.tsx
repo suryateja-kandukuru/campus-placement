@@ -15,15 +15,10 @@ export function Header({
   logo: string;
   hamburger: string;
 }) {
-  const { dispatch } = useContext<any>(AppContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-
   const [visible, setVisible] = useState(false);
   return (
-    <div className="header md:!h-24 !h-16">
+    <div className="header !h-20 bg-violet-500 text-white ">
       <div className="logoContainer">
-        {/* <img src={logo} alt="Project Logo"></img> */}
         <h2>Campus Placement</h2>
       </div>
 

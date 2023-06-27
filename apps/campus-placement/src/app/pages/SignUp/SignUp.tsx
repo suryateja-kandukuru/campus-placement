@@ -43,7 +43,7 @@ const CompanyCard = () => {
 
 export function SignUp() {
   return (
-    <div className="flex justify-center">
+    <div className="h-full flex justify-center items-center">
       <div className="w-full max-w-md flex gap-5">
         <CollegeCard />
         <CompanyCard />

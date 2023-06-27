@@ -10,7 +10,7 @@ export default defineConfig({
     port: 4200,
     host: "localhost",
     fs: {
-      allow: ["/Users/suryatejakandukuru/Desktop/campus-placement"],
+      allow: ["/Users/suryatejakandukuru/Documents/campus-placement"],
     },
   },
 

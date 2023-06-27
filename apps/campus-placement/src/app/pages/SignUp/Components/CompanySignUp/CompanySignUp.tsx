@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { classNames } from "primereact/utils";
 import "./CompanySignUp.scss";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AppContext } from "@shared-components";
+import URL from "apps/campus-placement/src/app/constants/constants";
 
 const CompanySignUp = () => {
+  const context = useContext(AppContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const defaultValues = {
     email: "",
@@ -20,9 +26,27 @@ const CompanySignUp = () => {
     reset,
   } = useForm({ defaultValues });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setFormData(data);
-
+    try {
+      await axios.post(URL + "/user/signUpCompany", {
+        emailId: data.email,
+        password: data.password,
+      });
+      context?.state.toast.show({
+        severity: "success",
+        summary: "Success Message",
+        detail: "Singup Successfull.",
+        life: 3000,
+      });
+    } catch (e: any) {
+      context?.state.toast.show({
+        severity: "error",
+        summary: "Error Message",
+        detail: e.message,
+        life: 3000,
+      });
+    }
     reset();
   };
 
@@ -96,7 +120,12 @@ const CompanySignUp = () => {
               </span>
               {getFormErrorMessage("password")}
             </div>
-
+            <div
+              className="text-blue-500 underline text-right cursor-pointer"
+              onClick={() => navigate("/login")}
+            >
+              Click here for login
+            </div>
             <Button type="submit" label="Submit" className="mt-2 text-black" />
           </form>
         </div>
