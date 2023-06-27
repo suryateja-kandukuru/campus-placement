@@ -16,14 +16,16 @@ type State = {
   id: string;
 };
 
-const initialState: State = {
+const initialState: any = {
   toast: null,
   auth: null,
   role: "",
   id: "",
+  studentDetails: {},
+  matchedJobs: [],
 };
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (state: State, action: Action): any => {
   switch (action.type) {
     case "SET_AUTH": {
       const decoded: any = jwtDecode(action.payload);
@@ -37,6 +39,10 @@ const reducer = (state: State, action: Action): State => {
     case "SetToastRef": {
       return { ...state, toast: action.payload };
     }
+    case "SetStudentDetails":
+      return { ...state, studentDetails: action.payload };
+    case "SetMatchedJobs":
+      return { ...state, matchedJobs: action.payload };
     default:
       return state;
   }

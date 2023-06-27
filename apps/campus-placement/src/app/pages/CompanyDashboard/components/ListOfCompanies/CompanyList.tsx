@@ -33,7 +33,7 @@ export function CompanyList() {
   const getJobs = async () => {
     const token = localStorage.getItem("token");
     const decoded = jwtDecode(token || "");
-    const response = await axios.get(base + "org-id" || decoded?.id);
+    const response = await axios.get(base + decoded?.id);
     console.log(response.data);
     setList(response.data);
   };

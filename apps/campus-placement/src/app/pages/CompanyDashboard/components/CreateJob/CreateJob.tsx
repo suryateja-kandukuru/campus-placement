@@ -6,13 +6,13 @@ import { Button } from "primereact/button";
 import URL from "apps/campus-placement/src/app/constants/constants";
 import axios from "axios";
 import { AppContext } from "@shared-components";
+import jwtDecode from "jwt-decode";
 
 const CreateJob = () => {
   const context = useContext(AppContext);
   const baseUrl = URL + "/job/createJob";
   const [loader, setLoader] = useState(false);
   const [formData, setFormData] = useState({
-    organisationId: "",
     title: "",
     description: "",
     location: "",
@@ -29,10 +29,13 @@ const CreateJob = () => {
 
   const handleSave = async () => {
     try {
+      // organisationId
+      const token = localStorage.getItem("token");
+      const decoded = jwtDecode(token || "");
+      const organisationId = decoded?.["id"];
       setLoader(true);
-      const result = await axios.post(baseUrl, formData);
+      const result = await axios.post(baseUrl, { ...formData, organisationId });
       setFormData({
-        organisationId: "",
         title: "",
         description: "",
         location: "",
@@ -66,16 +69,10 @@ const CreateJob = () => {
   return (
     <div className="p-4">
       <Card className="p-4 shadow-lg">
+        <div className="text-2xl text-black my-4  text-purple-600 font-bold">
+          Create Job:
+        </div>
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1">Organisation ID</label>
-            <InputText
-              name="organisationId"
-              value={formData.organisationId}
-              onChange={handleChange}
-              className="w-full"
-            />
-          </div>
           <div>
             <label className="block mb-1">Title</label>
             <InputText
@@ -147,7 +144,7 @@ const CreateJob = () => {
         <div className="flex justify-end mt-4">
           <Button
             type="submit"
-            label="Login"
+            label="Create Job"
             loading={loader}
             onClick={handleSave}
             className="m-auto  primary bg-[#6366F1]"

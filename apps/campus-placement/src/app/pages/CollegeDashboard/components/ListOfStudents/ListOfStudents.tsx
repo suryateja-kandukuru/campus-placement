@@ -8,11 +8,13 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { AppContext } from "@shared-components";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable-next-line */
 export interface ListOfStudentsProps {}
 
 export function ListOfStudents(props: ListOfStudentsProps) {
+  const navigate = useNavigate();
   const context = useContext(AppContext);
 
   const [student, setStudent] = useState(null);
@@ -20,6 +22,7 @@ export function ListOfStudents(props: ListOfStudentsProps) {
 
   const base = URL + "/student/studentsData?collegeId=";
   const deleteURL = URL + "/student/deleteStudent?id=";
+  const matchedUrl = URL + "/job/matchedJobs";
   const [list, setList] = useState({});
 
   useEffect(() => {
@@ -34,6 +37,18 @@ export function ListOfStudents(props: ListOfStudentsProps) {
     setList(response.data);
   };
 
+  const handleMatchedJobs = async (rowData) => {
+    context?.dispatch?.({
+      type: "SetStudentDetails",
+      payload: rowData,
+    });
+    const result = await axios.post(matchedUrl, rowData);
+    context?.dispatch?.({
+      type: "SetMatchedJobs",
+      payload: result.data || [],
+    });
+    navigate("/college/matched-jobs");
+  };
   const actionBodyTemplate = (rowData) => {
     return (
       <>
@@ -42,7 +57,10 @@ export function ListOfStudents(props: ListOfStudentsProps) {
           rounded
           outlined
           className="m-2"
-          onClick={() => handleDeleteDialog(rowData)}
+          onClick={(e) => {
+            e.preventDefault();
+            handleMatchedJobs(rowData);
+          }}
         />
         <Button
           icon="pi pi-trash"

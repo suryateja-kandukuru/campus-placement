@@ -6,7 +6,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import CompanySignUp from "../pages/SignUp/Components/CompanySignUp/CompanySignUp";
 import CollegeSignUp from "../pages/SignUp/Components/CollegeSignUp/CollegeSignUp";
 import FileUpload from "../pages/CollegeDashboard/components/FileUpload/FileUpload";
-import ListOfJobs from "../pages/CollegeDashboard/components/ListOfJobs/ListOfStudents";
+import ListOfJobs from "../pages/CollegeDashboard/components/ListOfStudents/ListOfStudents";
 import CollegeDashboard from "../pages/CollegeDashboard/CollegeDashboard";
 import UpdateProfile from "../pages/CollegeDashboard/components/UpdateProfile/UpdateProfile";
 import PrivateRoute from "./PrivateRoute";
@@ -14,6 +14,7 @@ import CompanyDashboard from "../pages/CompanyDashboard/CompanyDashboard";
 import CompanyProfile from "../pages/CompanyDashboard/components/Profile/CompanyProfile";
 import CompanyList from "../pages/CompanyDashboard/components/ListOfCompanies/CompanyList";
 import CreateJob from "../pages/CompanyDashboard/components/CreateJob/CreateJob";
+import MatchedJobs from "../pages/CollegeDashboard/components/MatchedJobs/MatchedJobs";
 
 const Router = () => {
   return (
@@ -29,6 +30,7 @@ const Router = () => {
             <Route path="list" element={<ListOfJobs />} />
             <Route path="upload" element={<FileUpload />} />
             <Route path="update-profile" element={<UpdateProfile />} />
+            <Route path="matched-jobs" element={<MatchedJobs />} />
           </Route>
           <Route path="company" element={<CompanyDashboard />}>
             <Route path="" element={<Navigate to={"list"} replace={true} />} />
