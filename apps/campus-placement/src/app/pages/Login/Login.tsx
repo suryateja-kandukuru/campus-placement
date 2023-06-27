@@ -109,6 +109,17 @@ const Login = () => {
             )}
           </div>
           <Button
+            type="button"
+            label="sign-up here..."
+            link
+            className="w-full  primary bg-[#6366F1]"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/sign-up");
+            }}
+          />
+
+          <Button
             type="submit"
             label="Login"
             loading={loader}

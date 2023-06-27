@@ -3,9 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Sidebar } from "primereact/sidebar";
 import SideMenu from "../SideMenu/Sidebar";
-import { LABELS } from "../../constants/constants";
 import { AppContext } from "../../context/AppContext";
-import { user } from "./User";
 import "./Header.css";
 
 export function Header({
@@ -34,7 +32,7 @@ export function Header({
           position="right"
           onHide={() => setVisible(false)}
         >
-          <SideMenu user={user} />
+          <SideMenu />
         </Sidebar>
       </div>
     </div>

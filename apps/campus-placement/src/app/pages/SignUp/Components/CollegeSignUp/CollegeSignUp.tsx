@@ -57,10 +57,10 @@ const CollegeSignUp = () => {
   };
 
   return (
-    <div className="form-demo h-full flex justify-center items-center">
-      <div className="flex justify-content-center">
+    <div className="form-demo h-full flex justify-center items-center graduate-bg">
+      <div className="flex justify-content-center bg-white p-4 rounded">
         <div className="card">
-          <h5 className="text-center">College SignUp</h5>
+          <h5 className="text-center text-2xl">College SignUp</h5>
           <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
             <div className="field">
               <span className="p-float-label p-input-icon-right">

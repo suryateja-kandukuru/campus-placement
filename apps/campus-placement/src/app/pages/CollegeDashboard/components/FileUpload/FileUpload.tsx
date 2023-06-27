@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 import URL from "apps/campus-placement/src/app/constants/constants";
+import { Button } from "primereact/button";
+import { AppContext } from "@shared-components";
 
 const FileUploader = () => {
+  const context = useContext(AppContext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -30,18 +33,30 @@ const FileUploader = () => {
         .then((response) => {
           console.log(response);
           setUploading(false);
+          context?.state.toast.show({
+            severity: "success",
+            summary: "Success",
+            detail: "File uploaded successfully",
+            life: 3000,
+          });
         })
         .catch((error) => {
           console.log(error);
           setUploading(false);
+          context?.state.toast.show({
+            severity: "error",
+            summary: "Error",
+            detail: "Error while file uploading",
+            life: 3000,
+          });
         });
     }
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center mt-[10%]">
       <div className="max-w-sm p-4 bg-white rounded-lg shadow-md">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
+        <label className="block text-gray-700 text-sm font-bold mb-2 text-2xl">
           Select Excel File:
         </label>
         <input
@@ -50,12 +65,12 @@ const FileUploader = () => {
           onChange={handleFileChange}
           className="p-2 border rounded"
         />
-        <button
+        <Button
           onClick={handleUpload}
-          className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="mt-4 w-full rounded flex justify-center items-center"
         >
           {uploading ? "Uploading..." : "Upload"}
-        </button>
+        </Button>
       </div>
     </div>
   );
